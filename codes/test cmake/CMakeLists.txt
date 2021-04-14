@@ -22,3 +22,7 @@ add_subdirectory(lib)
 add_executable(test src/main.cpp)
 target_include_directories(test PUBLIC lib)
 target_link_libraries(test PUBLIC VaRCVaRlib)
+
+add_executable(algo_naive src/test_algo_naive.cpp)
+target_include_directories(algo_naive PUBLIC lib)
+target_link_libraries(algo_naive PUBLIC VaRCVaRlib)

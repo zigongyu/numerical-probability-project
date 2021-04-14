@@ -1,2 +1,0 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libVaRCVaRlib.a CMakeFiles/VaRCVaRlib.dir/asa147.cpp.o CMakeFiles/VaRCVaRlib.dir/Loiexpon.cpp.o CMakeFiles/VaRCVaRlib.dir/LoiGamma.cpp.o CMakeFiles/VaRCVaRlib.dir/LoiGauss.cpp.o
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libVaRCVaRlib.a
