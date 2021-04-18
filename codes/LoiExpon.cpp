@@ -26,3 +26,8 @@ double LoiExpon::VaR(double alpha){
     return -log(1-alpha)/lambda;
 
 }
+
+double LoiExpon::CVaR(double alpha){
+    assert(alpha <=1 && alpha >=0);
+    return (1-log(1-alpha))/lambda;
+}

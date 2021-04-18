@@ -5,6 +5,7 @@ class LoiExpon {
         double density(double x);
         double fctRepar(double x);
         double VaR(double alpha);
+        double CVaR(double alpha);
     private :
         int lambda;
 };
