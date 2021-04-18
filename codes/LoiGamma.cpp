@@ -8,6 +8,9 @@ double LoiGamma::density(double x){
     return pow(x,k-1)*exp(-x/theta)/(tgamma(k)*pow(theta,k));
 }
 
+double LoiGamma::density_grad(double x){
+    return ( (k-1) * pow(x,k-2) * exp(-x/theta) - pow(x,k-1)*exp(-x/theta) / theta )/(tgamma(k)*pow(theta,k));
+}
 
 double LoiGamma::fctRepar(double x){
     int ifault = 0;

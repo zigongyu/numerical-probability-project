@@ -19,5 +19,3 @@ double gamma_n(double n){
     return 1./(pow(n,3/4)+1000);
 }
 
-
-

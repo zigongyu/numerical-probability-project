@@ -12,6 +12,15 @@ double LoiExpon::density(double x) {
     
 }
 
+double LoiExpon::density_grad(double x){
+    if (x<0){
+        return 0;
+    }
+    else{
+        return - lambda * lambda * exp(-lambda*x);
+    }
+}
+
 double LoiExpon::fctRepar(double x) {
     if (x<0){
         return 0;

@@ -7,7 +7,9 @@
 double LoiGauss::density(double x){
     return exp(-(x-m)*(x-m)/(2*sigma*sigma))/(sigma*sqrt(2*M_PI));
 }
-
+double LoiGauss::density_grad(double x){
+    return - exp(-(x-m)*(x-m)/(2*sigma*sigma)) * (x-m)/(pow(sigma,3)*sqrt(2*M_PI));
+}
 
 double LoiGauss::fctRepar(double x){
     return (1+erf((x-m)/(sigma*sqrt(2))))/2;
