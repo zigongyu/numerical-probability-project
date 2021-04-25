@@ -9,11 +9,12 @@ using namespace std;
 
 class varcvar{
     public:
-        varcvar(double var, double cvar, double L1, double L2): 
-                    var(var), cvar(cvar), L_IC_var(L1), L_IC_cvar(L2) {}
+        varcvar(double var, double cvar, double L1, double L2, double estim): 
+                    var(var), cvar(cvar), L_IC_var(L1), L_IC_cvar(L2), estim(estim){}
         friend std::ostream & operator<<(std::ostream & o, varcvar const & vcv);
+        // double get_var();
     protected:
-        double var,cvar,L_IC_var, L_IC_cvar;
+        double var,cvar,L_IC_var, L_IC_cvar, estim;
 };
 
 
@@ -49,7 +50,7 @@ class calcul{
             }
             L_IC_var = 2*1.96*sqrt(alpha*(1-alpha)/sample_size)/loi.density(func_inv(var));
             L_IC_cvar = 2*1.96*sqrt((s_carre/sample_size-s*s/sample_size/sample_size)/(1-alpha)/(1-alpha)/sample_size);
-            varcvar V(var,cvar,L_IC_var,  L_IC_cvar);
+            varcvar V(var,cvar,L_IC_var,  L_IC_cvar, loi.fctRepar(func_inv(var)) );
             return V;
         }
 
@@ -143,7 +144,7 @@ class calcul{
             cvar = CV_bar;
             L_IC_var = 2*1.96*sqrt(s1_carre/N-pow(s1/N,2))/loi.density(func_inv(var))/sqrt(N) ;
             L_IC_cvar = 2*1.96*sqrt(s2_carre/N-pow(s2/N,2))/(1-alpha)/sqrt(N);
-            varcvar V(var,cvar,L_IC_var,  L_IC_cvar);
+            varcvar V(var,cvar,L_IC_var,  L_IC_cvar, loi.fctRepar(func_inv(var)));
             return V;
         }
 

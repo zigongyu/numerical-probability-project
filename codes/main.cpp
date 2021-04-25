@@ -75,11 +75,11 @@ int main(){
     
     double (*fun)(double x);
     double (*fun_inv)(double x);
-    // fun = phi_linear;
-    // fun_inv = phi_linear_inverse;
-    fun = phi;
-    fun_inv = phi;
-    
+    fun = phi_linear;
+    fun_inv = phi_linear_inverse;
+    // fun = phi;
+    // fun_inv = phi;
+
     double alpha = 0.95;
     unsigned N = 1e6, M = N/100;
     // cout << "alpha = " << alpha <<", N = " << N << endl; 
@@ -89,75 +89,61 @@ int main(){
     unsigned m_N = 0;
     
     calcul<decltype(Exp), decltype(gen),decltype(loiExpon)> cal_exp(Exp, gen, loiExpon, rou, b, c);
-    cout << "Distribution Exp: "<< endl;
-    double xi_exp_95 = 2.998;
-    double f = loiExpon.density(xi_exp_95);
-    cout << "f: " << f << endl;
-
+    cout<<"\n" << "Distribution Exp: "<< endl;
     for (unsigned n : N_range){
         cout <<  "N: " << n << endl;
         cout << cal_exp.algo_naive( n, alpha, fun, fun_inv) << "\n\n";
         // m_N = n/100;
         // cout << "avance: "<< cal_exp.algo_avance(m_N, n, alpha, fun, f, G) << "\n\n";
     }
-    cout << "influence of alpha:"<< endl;
+    cout<<"\n\n" << "influence of alpha:"<< endl;
     for (double alpha_n : alpha_range){
-        f = 1;
         cout <<  "alpha: " << alpha_n << endl;
-        cout << cal_exp.algo_naive( N, alpha_n, fun, fun_inv) << "\n\n";
+        cout << cal_exp.algo_naive( N, alpha_n, fun, fun_inv) << "\n";
         // m_N = n/100;
         // cout << "avance: "<< cal_exp.algo_avance(m_N, n, alpha, fun, f, G) << "\n\n";
     }
-    cout << "-------------------------------------" << endl;
+    cout << "-------------------------------------" <<"\n\n"<< endl;
     
     
 
     calcul<decltype(Gauss), decltype(gen),decltype(loiGauss)> cal_gauss(Gauss, gen, loiGauss, rou, b, c);
-    cout << "Distribution Normale: "<< endl;
-    double xi_gauss_95 = 28.5833;
-    f = loiGauss.density(xi_gauss_95);
-    cout << "f: " << f << endl;
+    cout<<"\n" << "Distribution Normale: "<< endl;
     for (unsigned n : N_range){
         cout <<  "N: " << n << endl;
-        cout << cal_gauss.algo_naive( n, alpha, fun, fun_inv) << "\n\n";
+        cout << cal_gauss.algo_naive( n, alpha, fun, fun_inv) << "\n";
         m_N = n/100;
-        cout << "avance: "<< cal_gauss.algo_avance(m_N, n, alpha, fun, fun_inv, G) << "\n\n";
+        cout << "avance: "<< cal_gauss.algo_avance(m_N, n, alpha, fun, fun_inv, G) << "\n";
     }
-    cout << "influence of alpha:"<< endl;
+    cout<<"\n\n" << "influence of alpha:"<< endl;
     for (double alpha_n : alpha_range){
-        f = 1;
         cout <<  "alpha: " << alpha_n << endl;
-        cout << cal_gauss.algo_naive( N, alpha_n, fun, fun_inv) << "\n\n";
-        cout << "avance: "<< cal_gauss.algo_avance(M, N, alpha_n, fun, fun_inv, G) << "\n\n";
+        cout << cal_gauss.algo_naive( N, alpha_n, fun, fun_inv) << "\n";
+        cout << "avance: "<< cal_gauss.algo_avance(M, N, alpha_n, fun, fun_inv, G) << "\n";
     }
 
-    cout << "-------------------------------------" << endl;
-
+    cout<<"\n\n" << "-------------------------------------" <<"\n\n" <<endl;
+  
     calcul<decltype(Gamma), decltype(gen),decltype(loiGamma)> cal_gamma(Gamma, gen, loiGamma, rou, b, c);
-    cout << "Distribution Gamma: "<< endl;
-    double xi_gamma_95 = 14.2138;
-    f = loiGamma.density(xi_gamma_95);
-    f = 0.04;
-    cout << "f: " << f << endl;
+    cout<<"\n" << "Distribution Gamma: "<< endl;
     for (unsigned n : N_range){
         cout <<  "N: " << n << endl;
-        cout << cal_gamma.algo_naive( n, alpha, fun, fun_inv) << "\n\n";
+        cout << cal_gamma.algo_naive( n, alpha, fun, fun_inv) << "\n";
         m_N = n/100;
-        cout << "avance: " <<cal_gamma.algo_avance(m_N, n, alpha, fun, fun_inv, G) << "\n\n";
+        cout << "avance: " <<cal_gamma.algo_avance(m_N, n, alpha, fun, fun_inv, G) << "\n";
     }
-    cout << "influence of alpha:"<< endl;
+    cout<<"\n\n" << "influence of alpha:"<< endl;
     for (double alpha_n : alpha_range){
-        f = 1;
         cout <<  "alpha: " << alpha_n << endl;
-        cout << cal_gamma.algo_naive( N, alpha_n, fun, fun_inv) << "\n\n";
-        cout << "avance: "<< cal_gamma.algo_avance(M, N, alpha_n, fun, fun_inv, G) << "\n\n";
+        cout << cal_gamma.algo_naive( N, alpha_n, fun, fun_inv) << "\n";
+        cout << "avance: "<< cal_gamma.algo_avance(M, N, alpha_n, fun, fun_inv, G) << "\n";
     }
 
-    cout << "-------------------------------------" << endl;
-
+    cout<<"\n\n" << "-------------------------------------" <<"\n\n"<< endl;
+  
     // calcul<decltype(Gauss), decltype(gen),decltype(loiGauss)> cal_gauss(Gauss, gen, loiGauss, rou, b, c);
     cout << "Distribution Normale, option price: "<< endl;
-    f = 1;
+
     fun = phi_option;
     cout << cal_gauss.algo_naive( N, alpha, fun, fun_inv) << "\n\n";
     cout << "avance: "<< cal_gauss.algo_avance(M, N, alpha, fun, fun_inv, G) << endl;
