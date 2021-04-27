@@ -30,12 +30,18 @@ double phi_option(double x){
     double s_T = x0 * exp((r-0.5*sigma*sigma) * T + sigma * sqrt(T) * x);
     double p_f = P0 * exp(r*T);
     return K > s_T ? K - s_T - p_f : -p_f;
-
 }
 
 
 double gNormal(double x){
     return abs(x);
+}
+
+double gOption(double x){
+    double x0=100, sigma = 0.2, r = 0.05, T = 1, K = 110, P0 = 10.7;
+     double s_T = x0 * exp((r-0.5*sigma*sigma) * T + sigma * sqrt(T) * abs(x));
+     double p_f = P0 * exp(r*T);
+    return K + s_T - p_f;
 }
 
 
@@ -51,19 +57,23 @@ int main(){
     LoiExpon loiExpon(lambda);
     // cout << "Exp density: " << Expon.density(alpha) << endl;
     // cout << "Exp cdf: " << Expon.fctRepar(1.69) << endl;
-    cout << loiExpon.VaR(0.95) << endl;
-    cout << loiExpon.CVaR(0.95) << endl;
-    cout << endl;
+    // cout << loiExpon.VaR(0.95) << endl;
+    // cout << loiExpon.CVaR(0.95) << endl;
+    // cout << endl;
+    cout << endl << endl;
+    cout << "alpha = 0.95, phi(X) = X + 1 and X ~ Exp(" << lambda << ")" << endl;
+    cout << "VaR of phi(X) is: " << 1-log(1-0.95)/lambda<<endl;
+    cout << "CVaR of phi(X) is: " << 1+(1-log(1-0.95))/lambda<<endl;
 
     LoiGauss loiGauss(m,sigma);
     // cout <<  "Gauss density: " <<Gau.density(1) << endl;
-    cout << "Gauss cdf: " <<loiGauss.fctRepar(28.55) << endl;
-    cout << endl;
+    // cout << "Gauss cdf: " <<loiGauss.fctRepar(28.55) << endl;
+    // cout << endl;
 
     LoiGamma loiGamma(k,theta);
     // cout << "Gamma density: " << Gam.density(2) << endl;
-    cout << "Gamma cdf: " << loiGamma.fctRepar(14.2218) << endl;
-    cout << endl;
+    // cout << "Gamma cdf: " << loiGamma.fctRepar(14.2218) << endl;
+    // cout << endl;
 
     std::exponential_distribution<double> Exp(lambda);
     std::normal_distribution<double> Gauss(m,sigma);
@@ -109,12 +119,12 @@ int main(){
 
     calcul<decltype(Gauss), decltype(gen),decltype(loiGauss)> cal_gauss(Gauss, gen, loiGauss, rou, b, c);
     cout<<"\n" << "Distribution Normale: "<< endl;
-    for (unsigned n : N_range){
-        cout <<  "N: " << n << endl;
-        cout << cal_gauss.algo_naive( n, alpha, fun, fun_inv) << "\n";
-        m_N = n/100;
-        cout << "avance: "<< cal_gauss.algo_avance(m_N, n, alpha, fun, fun_inv, G) << "\n";
-    }
+    // for (unsigned n : N_range){
+    //     cout <<  "N: " << n << endl;
+    //     cout << cal_gauss.algo_naive( n, alpha, fun, fun_inv) << "\n";
+    //     m_N = n/100;
+    //     cout << "avance: "<< cal_gauss.algo_avance(m_N, n, alpha, fun, fun_inv, G) << "\n";
+    // }
     cout<<"\n\n" << "influence of alpha:"<< endl;
     for (double alpha_n : alpha_range){
         cout <<  "alpha: " << alpha_n << endl;
@@ -126,12 +136,12 @@ int main(){
   
     calcul<decltype(Gamma), decltype(gen),decltype(loiGamma)> cal_gamma(Gamma, gen, loiGamma, rou, b, c);
     cout<<"\n" << "Distribution Gamma: "<< endl;
-    for (unsigned n : N_range){
-        cout <<  "N: " << n << endl;
-        cout << cal_gamma.algo_naive( n, alpha, fun, fun_inv) << "\n";
-        m_N = n/100;
-        cout << "avance: " <<cal_gamma.algo_avance(m_N, n, alpha, fun, fun_inv, G) << "\n";
-    }
+    // for (unsigned n : N_range){
+    //     cout <<  "N: " << n << endl;
+    //     cout << cal_gamma.algo_naive( n, alpha, fun, fun_inv) << "\n";
+    //     m_N = n/100;
+    //     cout << "avance: " <<cal_gamma.algo_avance(m_N, n, alpha, fun, fun_inv, G) << "\n";
+    // }
     cout<<"\n\n" << "influence of alpha:"<< endl;
     for (double alpha_n : alpha_range){
         cout <<  "alpha: " << alpha_n << endl;
@@ -143,12 +153,15 @@ int main(){
   
     // calcul<decltype(Gauss), decltype(gen),decltype(loiGauss)> cal_gauss(Gauss, gen, loiGauss, rou, b, c);
     cout << "Distribution Normale, option price: "<< endl;
-
+    
     fun = phi_option;
-    cout << cal_gauss.algo_naive( N, alpha, fun, fun_inv) << "\n\n";
-    cout << "avance: "<< cal_gauss.algo_avance(M, N, alpha, fun, fun_inv, G) << endl;
-    cout << "the IC of VaR here is not accurate" << endl;
-
+    G = gOption;
+    for (double alpha_n : alpha_range){
+        cout <<  "alpha: " << alpha_n << endl;
+        cout << cal_gauss.algo_naive( N, alpha, fun, fun_inv) << "\n\n";
+        cout << "avance: "<< cal_gauss.algo_avance(M, N, alpha, fun, fun_inv, G) << endl;
+        cout << "the IC of VaR here is not accurate" << endl;
+    }
     return 0;
 
 }

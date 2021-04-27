@@ -134,10 +134,10 @@ class calcul{
                 
                 xi_bar = xi_bar -(xi_bar - xi) / (n+1);
                 CV_bar = CV_bar -(CV_bar - CV) / (n+1);
-                s1 = s1 + (func(x+theta) >= xi_bar) * loi.density(x+theta)/loi.density(x);
-                s1_carre = s1_carre + pow((func(x+theta) >= xi_bar) * loi.density(x+theta)/loi.density(x), 2);
-                s2 = s2 + (func(x+mu) - xi) * (func(x+mu) >= xi) * loi.density(x+mu)/loi.density(x);
-                s2_carre = s2_carre + pow( (func(x+mu) - xi) * (func(x+mu) >= xi) * loi.density(x+mu)/loi.density(x), 2);
+                s1 = s1 + (func(x+theta_old) >= xi_old) * loi.density(x+theta_old)/loi.density(x);
+                s1_carre = s1_carre + pow((func(x+theta_old) >= xi_old) * loi.density(x+theta_old)/loi.density(x), 2);
+                s2 = s2 + (func(x+mu_old) - xi_old) * (func(x+mu_old) >= xi_old) * loi.density(x+mu_old)/loi.density(x);
+                s2_carre = s2_carre + pow( (func(x+mu_old) - xi_old) * (func(x+mu_old) >= xi_old) * loi.density(x+mu_old)/loi.density(x), 2);
             }
             
             var = xi_bar;

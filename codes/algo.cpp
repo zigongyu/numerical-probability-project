@@ -18,6 +18,6 @@ double H2(double xi, double x, double c, double alpha){
 }
 
 double gamma_n(double n){
-    return 1./(pow(n,3/4)+1000);
+    return 1./(pow(n,3/4)+100);
 }
 
