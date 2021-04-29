@@ -7,32 +7,39 @@
 
 using namespace std;
 
+// c'est une classe juste pour storer les resultats obtenue, les valeurs de var, cvar, et les longueures de IC
 class varcvar{
     public:
         varcvar(double var, double cvar, double L1, double L2, double estim): 
                     var(var), cvar(cvar), L_IC_var(L1), L_IC_cvar(L2), estim(estim){}
         friend std::ostream & operator<<(std::ostream & o, varcvar const & vcv);
-        // double get_var();
     protected:
         double var,cvar,L_IC_var, L_IC_cvar, estim;
 };
 
 
 
+// les trois funcitons suivantes correspondent aux fonctions utilises pendant les iterations des deux methodes.
 double H1(double xi, double x, double alpha);
 
 double H2(double xi, double x, double c, double alpha);
 
 double gamma_n(double n);
 
+
+// c'est notre classe principale qui chercke a calculer Var CVaR en realisant les deux methodes.
+// comme nous avons utilise template, on ne peut pas separer la declaration et la deinition des foncitons
+// du coup, tout est unifies dans .hpp fichier.
 template <typename TDistrib, typename TGen, typename TLoi>
 class calcul{
     public:
+        //  TDistrib est la loi 
+        //  TGen est le generateur de nombre aleatoire
+        //  TLoi est les classes que nous avons ecrites, pour obtenir les density et ses derives.
         calcul(TDistrib X, TGen gen, TLoi loi, double rou, double b, double c):X(X), gen(gen), 
         loi(loi), rou(rou), b(b), c(c){}
 
-
-
+        // realiser la premiere methode
         varcvar algo_naive(unsigned sample_size, double alpha, double (*func)(double), double (*func_inv)(double)){
             double var=0, cvar=0, xi=0, cv=0, xi_next, cv_next, gamma;
             double L_IC_var, L_IC_cvar, s_carre=0, s=0;
@@ -54,8 +61,7 @@ class calcul{
             return V;
         }
 
-
-        
+        // L1, L2, L3, L4 sont des fonctions pour les iterations de la 2eme methode
         double L1(double xi, double theta, double x, double alpha, double (*func)(double)){
             double cst = exp(- rou * pow(abs(theta),b) );
             double tmp = loi.density(x+theta)/loi.density(x);
@@ -72,8 +78,6 @@ class calcul{
             double new_x = func(x-theta);
             double cst = exp(- 2 * rou * pow(abs(theta),b) );
             double tmp = pow(loi.density(x-theta),2) * loi.density_grad(x-2*theta)/(loi.density(x) * pow(loi.density(x - 2*theta),2) );
-            // cout << "loi.density(x), pow(loi.density(x - 2*theta),2)" << loi.density(x) << pow(loi.density(x - 2*theta),2)<< endl;
-            // cout << "new_x, cst, temp: " << new_x << cst << tmp << endl;
             return cst * (new_x >= xi) * tmp;
         }
 
@@ -84,6 +88,7 @@ class calcul{
             return cst * pow(new_x - xi, 2) * (new_x >= xi) * tmp;
         }
 
+        // realiser la 2eme methode
         varcvar algo_avance(unsigned M, unsigned N, double alpha, double (*func)(double), double (*func_inv)(double), double (*G)(double)){
             double var=0, cvar=0, gamma;
             double xi, CV=0, xi_old, CV_old, xi_bar = 0, CV_bar = 0;
