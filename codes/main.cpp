@@ -32,6 +32,10 @@ double phi_option(double x){
     return K > s_T ? K - s_T - p_f : -p_f;
 }
 
+double function_un(double x){
+    return 1;
+}
+
 
 double gNormal(double x){
     return abs(x);
@@ -39,7 +43,7 @@ double gNormal(double x){
 
 double gOption(double x){
     double x0=100, sigma = 0.2, r = 0.05, T = 1, K = 110, P0 = 10.7;
-     double s_T = x0 * exp((r-0.5*sigma*sigma) * T + sigma * sqrt(T) * abs(x));
+     double s_T = x0 * exp((r-0.5*sigma*sigma) * T + sigma * sqrt(T) * x);
      double p_f = P0 * exp(r*T);
     return K + s_T - p_f;
 }
@@ -156,11 +160,14 @@ int main(){
     
     fun = phi_option;
     G = gOption;
+    fun_inv = function_un;
+    c = 0.5;
+    calcul<decltype(Gauss), decltype(gen),decltype(loiGauss)> cal_gauss2(Gauss, gen, loiGauss, rou, b, c);
     for (double alpha_n : alpha_range){
         cout <<  "alpha: " << alpha_n << endl;
-        cout << cal_gauss.algo_naive( N, alpha, fun, fun_inv) << "\n\n";
-        cout << "avance: "<< cal_gauss.algo_avance(M, N, alpha, fun, fun_inv, G) << endl;
-        cout << "the IC of VaR here is not accurate" << endl;
+        cout << cal_gauss.algo_naive( N, alpha_n, fun, fun_inv) << "\n\n";
+        cout << "avance: "<< cal_gauss2.algo_avance(M, N, alpha_n, fun, fun_inv, G) << endl;
+        // cout << "the IC of VaR here is not accurate" << endl;
     }
     return 0;
 
